@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SIP25 Shake Survey</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: sticker-pop single column. Banana-yellow poster ground, chunky outlines, hard shadows, tilted stickers; a flavour marquee; the survey is a 6-round stepper. */
+:root{
+  --bg:#FFD93B; --ink:#2A1208; --card:#FFF8E1; --pink:#FF4F8B; --blue:#3B3BFF; --mint:#2EE6A6; --sun:#FFF8E1;
+  --on-blue:#FFFFFF; --on-fill:#2A1208; --muted:#6B4A36;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Space Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1E0F08; --ink:#FFF1D6; --card:#2E1A10; --pink:#FF6FA3; --blue:#8585FF; --mint:#2EE6A6; --sun:#FFD93B;
+    --on-blue:#150838; --muted:#D2B79B; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1E0F08; --ink:#FFF1D6; --card:#2E1A10; --pink:#FF6FA3; --blue:#8585FF; --mint:#2EE6A6; --sun:#FFD93B;
+  --on-blue:#150838; --muted:#D2B79B; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}body{margin:0}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.5;
+  padding-block:0 56px; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:radial-gradient(var(--ink) 1.2px,transparent 1.4px); background-size:26px 26px; background-position:0 0;
+  background-blend-mode:normal;
+}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--bg);opacity:.9}
+.wrap{max-width:880px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1;margin:0;text-wrap:balance;letter-spacing:.01em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:4px solid var(--blue);outline-offset:3px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-size:28px;background:var(--ink);color:var(--bg);padding:6px 14px 4px;border-radius:12px;transform:rotate(-3deg);display:inline-block;box-shadow:4px 4px 0 var(--pink)}
+.pill{font-family:var(--mono);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:3px solid var(--ink);background:var(--card);padding:6px 12px;border-radius:999px;box-shadow:3px 3px 0 var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center;padding-block:18px 30px}
+.hero-copy{min-width:0}
+.eyebrow{font-family:var(--mono);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}
+.hero h1{font-size:clamp(46px,10.5vw,96px)}
+.hero h1 .hl{display:inline-block;background:var(--pink);color:var(--on-fill);padding:0 .14em;border:4px solid var(--ink);border-radius:14px;transform:rotate(-2deg);box-shadow:6px 6px 0 var(--ink);margin-block:4px}
+.lede{font-size:19px;max-width:46ch;margin-top:20px;font-weight:500}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px;align-items:center}
+.btn{font-family:var(--display);font-size:20px;letter-spacing:.02em;cursor:pointer;border:4px solid var(--ink);border-radius:16px;padding:14px 24px 12px;background:var(--blue);color:var(--on-blue);box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.btn:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+.btn.alt{background:var(--card);color:var(--ink)}
+.btn.pinky{background:var(--pink);color:var(--on-fill)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.small{font-size:15px;padding:10px 16px 8px;border-radius:12px;border-width:3px;box-shadow:4px 4px 0 var(--ink)}
+.facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.facts .pill:nth-child(odd){background:var(--mint);color:var(--on-fill)}
+.cup-wrap{position:relative;justify-self:center;width:min(100%,300px)}
+.cup{width:100%;height:auto;display:block;transform:rotate(6deg);animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{50%{transform:rotate(3deg) translateY(-10px)}}
+.sticker{position:absolute;font-family:var(--display);font-size:15px;padding:8px 12px 6px;border:3px solid var(--ink);border-radius:12px;box-shadow:4px 4px 0 var(--ink);color:var(--on-fill)}
+.s1{top:2%;left:-6%;background:var(--mint);transform:rotate(-9deg)}
+.s2{bottom:8%;right:-4%;background:var(--sun);transform:rotate(7deg)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sticker.s2{background:var(--sun)}}
+
+/* marquee */
+.marquee{overflow:hidden;border:4px solid var(--ink);border-radius:16px;background:var(--ink);color:var(--bg);transform:rotate(-1deg);margin-block:6px 34px}
+.marquee-track{display:flex;width:max-content;animation:slide 28s linear infinite;font-family:var(--display);font-size:22px;white-space:nowrap}
+.marquee-track span{padding:12px 22px 10px;display:flex;align-items:center;gap:22px}
+.marquee-track i{width:14px;height:14px;border-radius:50%;display:inline-block;border:3px solid var(--bg)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* cards */
+.card{background:var(--card);border:4px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:clamp(18px,4vw,32px)}
+.section-head{display:flex;gap:14px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:6px}
+.round{font-family:var(--mono);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin:14px 0 24px}
+.bar b{height:14px;border:3px solid var(--ink);border-radius:8px;background:transparent}
+.bar b.done{background:var(--mint)}
+.bar b.now{background:var(--pink)}
+.card h2{font-size:clamp(28px,6vw,44px)}
+.sub{color:var(--muted);margin-top:8px;font-weight:500}
+
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.q{margin-top:28px}
+.q legend{padding:0;font-weight:700;font-size:18px;display:flex;gap:10px;align-items:baseline}
+.q legend .n{font-family:var(--mono);font-size:13px;background:var(--ink);color:var(--card);border-radius:8px;padding:2px 8px;flex:none}
+.q .hint{font-family:var(--mono);font-size:12px;color:var(--muted);margin:6px 0 0 0;text-transform:uppercase;letter-spacing:.06em}
+.opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.opt{position:relative;display:block;min-width:0}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt span{display:flex;align-items:center;gap:8px;border:3px solid var(--ink);border-radius:14px;padding:9px 15px;font-weight:700;background:var(--card);box-shadow:3px 3px 0 var(--ink);transition:transform .1s,box-shadow .1s,background .1s}
+.opt:hover span{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.opt input:checked + span{background:var(--pink);color:var(--on-fill);transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.opt input:focus-visible + span{outline:4px solid var(--blue);outline-offset:3px}
+.opt.multi input:checked + span::before{content:"✓";font-weight:700}
+.dot{width:14px;height:14px;border-radius:50%;border:3px solid var(--ink);flex:none}
+.opt.price span{font-family:var(--mono);font-size:15px}
+textarea,input[type=text]{width:100%;font:inherit;font-weight:500;color:var(--ink);background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:12px 14px;margin-top:12px;box-shadow:3px 3px 0 var(--ink)}
+textarea{min-height:92px;resize:vertical}
+.consent{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-weight:500}
+.consent input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--pink);flex:none}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;flex-wrap:wrap}
+
+/* thanks */
+.thanks h2{font-size:clamp(36px,9vw,64px)}
+.status{margin-top:16px;border:3px dashed var(--ink);border-radius:14px;padding:12px 14px;font-weight:500}
+.status.ok{background:var(--mint);color:var(--on-fill);border-style:solid}
+.share-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+
+/* results */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:22px}
+.stat{border:3px solid var(--ink);border-radius:16px;padding:14px;background:var(--bg);box-shadow:4px 4px 0 var(--ink);min-width:0}
+.stat .v{font-family:var(--display);font-size:38px;line-height:1.05}
+.stat .l{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.chart{margin-top:26px}
+.chart h3{font-size:20px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:minmax(90px,38%) 1fr 52px;gap:10px;align-items:center;margin-top:7px;font-size:14px;font-weight:700}
+.row .t{border:3px solid var(--ink);border-radius:8px;height:22px;background:var(--bg);overflow:hidden}
+.row .t i{display:block;height:100%;background:var(--blue);border-right:3px solid var(--ink)}
+.row .p{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.small{font-size:14px;color:var(--muted);font-weight:500}
+footer{margin-top:40px;font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;text-align:center}
+footer a{font-weight:700}
+
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr}
+  .cup-wrap{width:min(70%,240px);order:-1}
+  .s1{left:-4%}
+  .row{grid-template-columns:1fr 52px}
+  .row .lab{grid-column:1/-1}
+  .btn{font-size:18px}
+}
+@media (prefers-reduced-motion: reduce){
+  .cup,.marquee-track{animation:none}
+  *{transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <span class="logo">SIP25</span>
+    <span class="pill">Chennai · Gym shake survey</span>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Fuel your fitness. One shake at a time.</p>
+        <h1>Would you <span class="hl">SIP</span> it?</h1>
+        <p class="lede">A freshly blended whey protein shake, made in front of you, right outside your gym. Tell us the flavour, the price and the brand you'd trust, and help decide what SIP25 serves first.</p>
+        <div class="cta-row">
+          <a class="btn" href="#survey" id="startBtn">Start the survey</a>
+        </div>
+        <div class="facts">
+          <span class="pill">27 questions</span>
+          <span class="pill">About 3 min</span>
+          <span class="pill">Tap to answer</span>
+          <span class="pill">Contact details optional</span>
+        </div>
+      </div>
+      <div class="cup-wrap" aria-hidden="true">
+        <svg class="cup" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+          <rect x="112" y="8" width="16" height="70" rx="6" transform="rotate(12 120 40)" style="fill:var(--blue);stroke:var(--ink);stroke-width:6"/>
+          <path d="M34 62 H166 L150 262 Q149 270 140 270 H60 Q51 270 50 262 Z" style="fill:var(--card);stroke:var(--ink);stroke-width:7;stroke-linejoin:round"/>
+          <path d="M42 112 Q70 96 100 110 T160 108 L150 262 Q149 270 140 270 H60 Q51 270 50 262 Z" style="fill:var(--pink);stroke:var(--ink);stroke-width:7;stroke-linejoin:round"/>
+          <rect x="26" y="40" width="148" height="30" rx="12" style="fill:var(--ink)"/>
+          <text x="100" y="218" text-anchor="middle" style="font-family:var(--display);font-size:62px;fill:var(--on-fill);stroke:var(--ink);stroke-width:1">25</text>
+          <circle cx="76" cy="140" r="5" style="fill:var(--card)"/><circle cx="128" cy="152" r="7" style="fill:var(--card)"/><circle cx="100" cy="166" r="4" style="fill:var(--card)"/>
+        </svg>
+        <span class="sticker s1">Taste test soon</span>
+        <span class="sticker s2">Your vote counts</span>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="track"></div>
+    </div>
+
+    <section id="survey" aria-live="polite">
+      <div class="card" id="stage"></div>
+    </section>
+  </main>
+
+
+  <footer>
+    SIP25 · Survey interest is not a sale · Pilot comes next
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- survey definition (matches the questionnaire, Q1-Q24) ---------- */
+  var FLAV = {"Chocolate":"#6B3A1E","Banana":"#FFD93B","Coffee":"#9A6B3F","Vanilla":"#FFF3C4","Strawberry":"#FF4F8B","Peanut butter":"#D9953A","Other":"#2EE6A6"};
+  var SECTIONS = [
+    {id:"A", title:"Who's sipping?", sub:"Customer profile", qs:[
+      {n:1,k:"age",t:"What is your age group?",type:"single",o:["Below 18","18–24","25–30","31–40","Above 40"]},
+      {n:2,k:"gender",t:"What is your gender?",type:"single",o:["Male","Female","Prefer not to say","Other"]},
+      {n:3,k:"member",t:"Are you currently a gym member?",type:"single",o:["Yes","No","Planning to join"]},
+      {n:4,k:"workout",t:"How frequently do you work out?",type:"single",o:["Daily","4–5 days a week","2–3 days a week","Once a week","Occasionally"]},
+      {n:0,k:"group",t:"Which best describes you?",type:"single",o:["Regular gym member","Casual gym member","Personal trainer","Non-gym fitness customer","Sports / cricket player","Other"]}
+    ]},
+    {id:"B", title:"Your protein game", sub:"Protein consumption habits", qs:[
+      {n:5,k:"whey",t:"Do you currently consume whey protein?",type:"single",o:["Yes, regularly","Sometimes","No, but interested","No, not interested"]},
+      {n:6,k:"how",t:"How do you usually consume protein?",type:"multi",o:["Homemade protein shake","Whey with water or milk","Ready-to-drink protein beverage","Protein-rich food","I don't consume protein supplements"]},
+      {n:7,k:"goal",t:"What is your main fitness goal?",type:"single",o:["Muscle building","Weight loss","General fitness","Sports performance","Weight gain","Overall health"]},
+      {n:8,k:"brands",t:"Which whey protein brands do you currently use or prefer?",type:"multi",o:["Optimum Nutrition (ON)","MuscleBlaze","Avvatar","American Muscle","MaxN","MD Whey","Gibbon Whey","Myprotein","Other","No preference"]}
+    ]},
+    {id:"C", title:"The SIP25 shake", sub:"Product preferences", qs:[
+      {n:9,k:"buy",t:"Would you purchase a freshly prepared whey protein milkshake after your workout?",type:"single",o:["Definitely","Probably","Not sure","Probably not","Definitely not"]},
+      {n:10,k:"flavours",t:"Which flavours would you prefer?",type:"multi",flav:true,o:["Chocolate","Banana","Coffee","Vanilla","Strawberry","Peanut butter","Other"]},
+      {n:11,k:"milk",t:"What type of milk would you prefer?",type:"single",o:["Regular milk","Lactose-free milk","Plant-based milk","Water-based shake","No preference"]},
+      {n:0,k:"allergy",t:"Any allergies we should know about?",type:"multi",o:["None","Milk / lactose","Peanuts","Tree nuts","Soy","Other"]},
+      {n:12,k:"size",t:"What serving size would you prefer?",type:"single",o:["250 ml","300–350 ml","400–500 ml","No preference"]},
+      {n:13,k:"serving",t:"Which protein option would interest you?",type:"single",o:["Standard single serving","Double protein serving","Both options","Not sure"]}
+    ]},
+    {id:"D", title:"Price & timing", sub:"Pricing and purchase behaviour", qs:[
+      {n:14,k:"price",t:"What would you be willing to pay for a freshly prepared single-serving whey shake?",type:"single",price:true,o:["Below ₹149","₹149–₹179","₹180–₹199","₹200–₹229","₹230–₹259","₹260 or more"]},
+      {n:0,k:"spend",t:"What do you spend on protein shakes or supplements per month right now?",type:"single",price:true,o:["Nothing now","Below ₹2,000","₹2,000–₹4,000","₹4,000–₹6,000","Above ₹6,000"]},
+      {n:15,k:"freq",t:"How often would you purchase a protein shake?",type:"single",o:["Daily","3–4 times a week","1–2 times a week","Occasionally","Only after intense workouts"]},
+      {n:16,k:"when",t:"When would you most likely buy one?",type:"single",o:["Before workout","Immediately after workout","Morning","Evening","Any convenient time"]},
+      {n:17,k:"pack",t:"Would you buy a weekly or monthly shake package if it offered a discount?",type:"single",o:["Yes","Maybe","No"]}
+    ]},
+    {id:"E", title:"Where & why you'd trust us", sub:"Location and customer expectations", qs:[
+      {n:18,k:"outside",t:"Would you prefer a shake outlet directly outside your gym?",type:"single",o:["Yes","No","Depends on price and quality"]},
+      {n:19,k:"matters",t:"What matters most when choosing a protein shake?",type:"multi",o:["Genuine branded whey","Affordable price","Taste","Protein content","Hygiene","Fresh preparation","Convenience","Fast service"]},
+      {n:20,k:"trust",t:"What would make you trust SIP25?",type:"multi",o:["Showing the original whey pack","Preparing the shake in front of me","Displaying protein and calorie information","Using measured portions","Hygienic preparation","Branded ingredients and invoices"]},
+      {n:21,k:"recommend",t:"Would you recommend SIP25 to your gym friends if you liked the product?",type:"single",o:["Definitely","Probably","Not sure","No"]}
+    ]},
+    {id:"F", title:"Last words", sub:"Additional feedback", qs:[
+      {n:22,k:"gym",t:"Which area or gym do you usually visit?",type:"text",ph:"Area or gym name"},
+      {n:23,k:"ideas",t:"What additional flavours or features would you like SIP25 to offer?",type:"area",ph:"Your wild ideas go here"},
+      {n:24,k:"contact",t:"Would you like to participate in our launch trial? (Optional)",type:"contact"}
+    ]}
+  ];
+
+  /* Paste your Google Apps Script web app URL between the quotes */
+  var ENDPOINT = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+  var TOTAL = 0;
+  SECTIONS.forEach(function(s){ s.qs.forEach(function(q){ q.n = ++TOTAL; }); });
+  var answers = {};
+  var step = -1;          /* -1 = intro card */
+  var submitted = false;
+  var saveState = "idle";  /* idle | saving | saved | local */
+  var stage = document.getElementById("stage");
+
+  /* ---------- marquee ---------- */
+  (function(){
+    var names = Object.keys(FLAV), html = "";
+    for (var r = 0; r < 4; r++) {
+      names.forEach(function(n){ html += '<span>' + n.toUpperCase() + '<i style="background:' + FLAV[n] + '"></i></span>'; });
+    }
+    document.getElementById("track").innerHTML = html;
+  })();
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  function answeredCount(){
+    var c = 0;
+    SECTIONS.forEach(function(s){ s.qs.forEach(function(q){
+      var v = answers[q.k];
+      if (q.type === "contact") { if (answers.contactValue && answers.contactConsent) c++; }
+      else if (Array.isArray(v) ? v.length : (v && String(v).trim())) c++;
+    });});
+    return c;
+  }
+
+  /* ---------- render ---------- */
+  function render(){
+    if (submitted) { renderThanks(); return; }
+    if (step < 0) { renderIntro(); return; }
+    var s = SECTIONS[step];
+    var bar = "";
+    for (var i = 0; i < SECTIONS.length; i++) bar += '<b class="' + (i < step ? "done" : i === step ? "now" : "") + '"></b>';
+    var html = '<div class="section-head"><span class="round">Round ' + (step+1) + ' of ' + SECTIONS.length + ' · ' + esc(s.sub) + '</span><span class="round">' + answeredCount() + ' / ' + TOTAL + ' answered</span></div>' +
+      '<div class="bar" role="progressbar" aria-valuemin="1" aria-valuemax="' + SECTIONS.length + '" aria-valuenow="' + (step+1) + '">' + bar + '</div>' +
+      '<h2>' + esc(s.title) + '</h2><p class="sub">Skip anything you like. Pick one unless it says select all.</p>';
+    s.qs.forEach(function(q){ html += renderQ(q); });
+    html += '<div class="nav">' +
+      '<button class="btn alt" type="button" id="back">' + (step === 0 ? "Back to start" : "Back") + '</button>' +
+      (step < SECTIONS.length - 1
+        ? '<button class="btn" type="button" id="next">Next round</button>'
+        : '<button class="btn pinky" type="button" id="send">Send my answers</button>') +
+      '</div>';
+    stage.innerHTML = html;
+    bind(s);
+    document.getElementById("back").onclick = function(){ step--; render(); scrollToSurvey(); };
+    var nx = document.getElementById("next"); if (nx) nx.onclick = function(){ step++; render(); scrollToSurvey(); };
+    var sd = document.getElementById("send"); if (sd) sd.onclick = submit;
+  }
+
+  function renderIntro(){
+    stage.innerHTML =
+      '<p class="round">Before you start</p><h2 style="margin-top:8px">Six quick rounds. Zero typing needed.</h2>' +
+      '<p class="sub">Your answers shape which flavours, brands and prices SIP25 launches with. Contact details are optional and only used for the launch trial if you say yes.</p>' +
+      '<div class="cta-row"><button class="btn" type="button" id="go">Let\'s go</button></div>';
+    document.getElementById("go").onclick = function(){ step = 0; render(); scrollToSurvey(); };
+  }
+
+  function scrollToSurvey(){ var el = document.getElementById("survey"); if (el) el.scrollIntoView({block:"start"}); }
+
+  function renderQ(q){
+    var h = '<fieldset class="q"><legend><span class="n">Q' + q.n + '</span><span>' + esc(q.t) + '</span></legend>';
+    if (q.type === "multi") h += '<p class="hint">Select all that apply</p>';
+    if (q.type === "single" || q.type === "multi") {
+      h += '<div class="opts">';
+      q.o.forEach(function(o, i){
+        var checked = q.type === "multi" ? (answers[q.k] || []).indexOf(o) > -1 : answers[q.k] === o;
+        var id = "q" + q.n + "_" + i;
+        h += '<label class="opt ' + (q.type === "multi" ? "multi " : "") + (q.price ? "price" : "") + '" for="' + id + '">' +
+          '<input id="' + id + '" type="' + (q.type === "multi" ? "checkbox" : "radio") + '" name="' + q.k + '" value="' + esc(o) + '"' + (checked ? " checked" : "") + '>' +
+          '<span>' + (q.flav ? '<i class="dot" style="background:' + FLAV[o] + '"></i>' : "") + esc(o) + '</span></label>';
+      });
+      h += '</div>';
+    } else if (q.type === "text") {
+      h += '<input type="text" id="f_' + q.k + '" placeholder="' + esc(q.ph) + '" value="' + esc(answers[q.k] || "") + '" maxlength="120">';
+    } else if (q.type === "area") {
+      h += '<textarea id="f_' + q.k + '" placeholder="' + esc(q.ph) + '" maxlength="500">' + esc(answers[q.k] || "") + '</textarea>';
+    } else if (q.type === "contact") {
+      h += '<input type="text" id="f_contactValue" placeholder="Phone number or email (18+ only)" value="' + esc(answers.contactValue || "") + '" maxlength="120" autocomplete="off">' +
+        '<label class="consent" for="f_contactConsent"><input type="checkbox" id="f_contactConsent"' + (answers.contactConsent ? " checked" : "") + '><span>I agree SIP25 may use these details only to invite me to the launch trial.</span></label>';
+    }
+    return h + '</fieldset>';
+  }
+
+  function bind(s){
+    s.qs.forEach(function(q){
+      if (q.type === "single") {
+        stage.querySelectorAll('input[name="' + q.k + '"]').forEach(function(el){
+          el.onchange = function(){ answers[q.k] = el.value; refreshCount(); };
+        });
+      } else if (q.type === "multi") {
+        stage.querySelectorAll('input[name="' + q.k + '"]').forEach(function(el){
+          el.onchange = function(){
+            var cur = answers[q.k] || [];
+            if (el.checked) { if (cur.indexOf(el.value) < 0) cur.push(el.value); }
+            else cur = cur.filter(function(x){ return x !== el.value; });
+            answers[q.k] = cur; refreshCount();
+          };
+        });
+      } else if (q.type === "text" || q.type === "area") {
+        var f = document.getElementById("f_" + q.k);
+        f.oninput = function(){ answers[q.k] = f.value; refreshCount(); };
+      } else if (q.type === "contact") {
+        document.getElementById("f_contactValue").oninput = function(e){ answers.contactValue = e.target.value; refreshCount(); };
+        document.getElementById("f_contactConsent").onchange = function(e){ answers.contactConsent = e.target.checked; refreshCount(); };
+      }
+    });
+  }
+  function refreshCount(){
+    var spans = stage.querySelectorAll(".section-head .round");
+    if (spans[1]) spans[1].textContent = answeredCount() + " / " + TOTAL + " answered";
+  }
+
+  /* ---------- submit ---------- */
+  function payload(){
+    var p = {ts: Date.now(), v: 1};
+    SECTIONS.forEach(function(s){ s.qs.forEach(function(q){
+      if (q.type === "contact") return;
+      var v = answers[q.k];
+      if (Array.isArray(v) ? v.length : (v && String(v).trim())) p[q.k] = Array.isArray(v) ? v.slice() : String(v).trim();
+    });});
+    if (answers.contactConsent && answers.contactValue && answers.contactValue.trim()) {
+      p.contact = answers.contactValue.trim(); p.consent = true;
+    }
+    return p;
+  }
+
+  function submit(){
+    if (answeredCount() === 0) {
+      var note = stage.querySelector(".status");
+      if (!note) { var d = document.createElement("div"); d.className = "status"; d.textContent = "Answer at least one question first, then send."; stage.appendChild(d); }
+      return;
+    }
+    submitted = true; saveState = "saving"; render();
+    var p = payload();
+    if (!ENDPOINT || ENDPOINT.indexOf("PASTE") === 0) { saveState = "local"; render(); return; }
+    fetch(ENDPOINT, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(p)})
+      .then(function(){ saveState = "saved"; render(); })
+      .catch(function(){ saveState = "local"; render(); });
+  }
+
+  function summaryText(){
+    var p = payload(), lines = ["My SIP25 shake survey answers:"];
+    SECTIONS.forEach(function(s){ s.qs.forEach(function(q){
+      var v = p[q.k]; if (q.type === "contact") return;
+      if (v) lines.push("Q" + q.n + " " + q.t + " " + (Array.isArray(v) ? v.join(", ") : v));
+    });});
+    if (p.contact) lines.push("Contact (for launch trial): " + p.contact);
+    return lines.join("\n");
+  }
+
+  function renderThanks(){
+    var msg;
+    if (saveState === "saving") msg = '<div class="status">Sending your answers…</div>';
+    else if (saveState === "saved") msg = '<div class="status ok">Sent. Your answers are with the SIP25 team.</div>';
+    else msg = '<div class="status">Your answers could not be sent, so the team may not have them yet. Copy them below and send them to whoever shared this survey with you.</div>';
+    var shareText = "Gym folks in Chennai: SIP25 is planning fresh whey shakes outside the gym. Take the 3 minute survey and pick the flavours: " + location.href.split("#")[0];
+    stage.innerHTML =
+      '<div class="thanks"><p class="round">Round complete</p><h2 style="margin-top:8px">You just helped shape the menu.</h2>' +
+      '<p class="sub">Thanks for the honest answers. Chocolate, banana or something wild, we will read every one.</p>' + msg +
+      '<div class="share-row">' +
+        (saveState === "local" ? '<button class="btn small" type="button" id="copyAns">Copy my answers</button>' : '') +
+        '<a class="btn small pinky" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(shareText) + '">Tell a gym buddy</a>' +
+        '<button class="btn small alt" type="button" id="again">Another respondent</button>' +
+      '</div><p class="small" id="copyNote" style="margin-top:12px"></p></div>';
+    var c = document.getElementById("copyAns");
+    if (c) c.onclick = function(){
+      var t = summaryText(), note = document.getElementById("copyNote");
+      var fail = function(){
+        note.textContent = "Copy was blocked. Select the text below and copy it.";
+        var ta = document.createElement("textarea"); ta.value = t; ta.readOnly = true; ta.onfocus = function(){ ta.select(); };
+        note.after(ta);
+      };
+      try { navigator.clipboard.writeText(t).then(function(){ note.textContent = "Copied. Paste it in a message to the SIP25 team."; }, fail); } catch(e){ fail(); }
+    };
+    document.getElementById("again").onclick = function(){ answers = {}; step = -1; submitted = false; saveState = "idle"; render(); scrollToSurvey(); };
+  }
+
+  render();
+
+})();
+</script>
+</body></html>
